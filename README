@@ -13,30 +13,20 @@ Contents of this README file:
 ------------------------------------
 1. PathFinder overview:
 
-PathFinder searches for "signatures" within graphs. Graphs being searched are 
-directed and cyclic. Many, but not all nodes within the graph have labels. Any 
-given node may have more than one label, and any label may be applied to more 
-than one node. A signature is an orderd list of labels. PathFinder searches for 
-paths between labels within the signature. PathFinder returns success if there 
-is a path from a node with the first label in the signature that passes through 
-nodes with each label in order, ultimately reaching a node with the last label 
-in the signature. Labeled nodes need not be contiguous on any given path. 
+PathFinder searches for "signatures" within graphs. Graphs being searched are directed and cyclic. Many, but not all nodes within the graph have labels. Any given node may have more than one label, and any label may be applied to more than one node. A signature is an orderd list of labels. PathFinder searches for paths between labels within the signature. PathFinder returns success if there is a path from a node with the first label in the signature that passes through  nodes with each label in order, ultimately reaching a node with the last label in the signature. Labeled nodes need not be contiguous on any given path. 
 
-At the current time, PathFinder does not do any pathway analysis (e.g. shortest
-path) for discovered signatures. PathFinder simply searches until a signature is
-satisfied or all pathways have been exhausted.
+At the current time, PathFinder does not do any pathway analysis (e.g. shortest path) for discovered signatures. PathFinder simply searches until a signature is satisfied or all pathways have been exhausted.
 
 ------------------------------------
 2. PathFinder versions:
 
-- PathFinder_ref:
-    reference version: self-contained. Includes serial and OpenMP parallel
-    implementations. MPI is not yet supported.
+- ref:
+    Reference implementation: self-contained. Includes Serial and OpenMP parallel implementations. MPI is not yet supported.
 
 ------------------------------------
 3. Building PathFinder:
 
-The standard build is to cd into the 'PathFinder_ref' directory and type 'make'.
+The standard build is to cd into the 'ref' directory and type 'make'.
 Doing so builds an OpenMP enabled version of PathFinder (named PathFinder.x). For
 serial execution, run it with the OMP_NUM_THREADS environment variable set to 1.
 
@@ -63,7 +53,7 @@ embarrassingly parallel, and can be quite time consuming depending on the size
 of the graph and number of labels. Running PathFinder exhaustively is done with
 the -x switch:
     PathFinder.x -x <data file> 
-    e.g. PathFinder.x -x ../scaleData/1kx750.adj_list
+    e.g. PathFinder.x -x ../data/scaleData/1kx750.adj_list
 
 To search for specific signatures, PathFinder can be run interactively or with
 a configuration file. To run interactively, use the -i switch:
@@ -126,10 +116,10 @@ For each signature
             in the signature
 
         Get set of nodes with signature[0], the first label in signature
-        for each “Start” node
+        for each â€œStartâ€ node
         {
             // Recursive procedure to find remaining signature. Requires
-            // current node, the remaining “unfound” signature legs
+            // current node, the remaining â€œunfoundâ€ signature legs
             // a result stack of nodes to store path traversed and
             // a stack of nodes visited so far to detect cycles and
             // redundant searches
@@ -137,29 +127,29 @@ For each signature
             Create empty visited stack
             success = FindRemainingSignatureFromCurrentNode ( startNode, 
                                                 &signature[1], result, visited )
-        } // end of for each “Start” node
+        } // end of for each â€œStartâ€ node
     } // end of for each Graph
 } // end of for each Signature
 
 
 // Recursive procedure to find remaining signature.
-//      currentNode – the node whose edges *might* reach the
+//      currentNode â€“ the node whose edges *might* reach the
 //                    next label in the signature
-//      signature – an array of pointers to C strings. These strings
+//      signature â€“ an array of pointers to C strings. These strings
 //                  are the labels being matched by the nodes being
 //                  searched. Each sequential pair of labels is a
-//                  “leg” of the search. The last pointer is NULL to
+//                  â€œlegâ€ of the search. The last pointer is NULL to
 //                  terminate the array.
-//      result – a stack of nodes containing the path currently
+//      result â€“ a stack of nodes containing the path currently
 //               traversed to reach this node
-//      visited – a stack of ALL nodes searched during the attempt
+//      visited â€“ a stack of ALL nodes searched during the attempt
 //                to find the current label
 
 boolean FindRemainingSignatureFromCurrentNode ( currentNode, signature, result,
                                                     visited )
 {
     If currentNode is in visited
-        return FALSE – we have reached a cycle or a subgraph that has
+        return FALSE â€“ we have reached a cycle or a subgraph that has
                        already been searched
     else
         push currentNode onto visited stack
@@ -178,30 +168,30 @@ boolean FindRemainingSignatureFromCurrentNode ( currentNode, signature, result,
                 if success
                     result += nextResult
                     delete nextVisited
-                    return TRUE, we’ve found the path
+                    return TRUE, weâ€™ve found the path
                 else
                     continue through edge checking
             else signature[1] == NULL
                 push edge->targetNode onto result
-                return true, we’ve found the path
+                return true, weâ€™ve found the path
         }
         else
             continue through edge checking
     } // end of for each edge target compared against signature [0]
 
-    // If we’ve made it this far, none of the edges is a direct
+    // If weâ€™ve made it this far, none of the edges is a direct
     // match to the current label, do a deeper search
     For each edge from current node
     {
         success = FindRemainingSignatureFromCurrentNode ( edge->targetNode, 
                                     &signature[0], result, visited )
         if success
-            return TRUE, we’ve found the path
+            return TRUE, weâ€™ve found the path
         else
             continue through edge searching loop
     }
 
-    // If we’ve made it this far, we have no path
+    // If weâ€™ve made it this far, we have no path
     pop currentNode off of result (but not off of visited)
     return FALSE;
 } // end of find remaining signature
