@@ -47,6 +47,7 @@
 #include "utils.h"
 #include "graphGen.h"
 #include "statistics.h"
+#include "yaml.h"
 
 
 extern double currentTime();
@@ -548,7 +549,9 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
         {
             maxThreads = omp_get_num_threads();
             options->multiThreaded = maxThreads > 1;
-            /* debug * /printf( "%d total threads, this one is %d\n", maxThreads, myThread ); /* debug */
+#ifdef DEBUG
+            printf( "%d total threads, this one is %d\n", maxThreads, myThread );
+#endif
             lastingResults = malloc((maxThreads+1) * sizeof(NodeVecVec*) );
             lastingResults[maxThreads] = 0; /* Null terminated to avoid having to keep track of bitsNeeded */
         }
@@ -580,11 +583,11 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
                     fullIntSignature[1] = j;
                     NodePtrVec *result = NodePtrVec_new(16);
                     Bitfield *visited = Bitfield_new(graph->totalNodes);
-                    /* debug ---> * /
+#ifdef DEBUG
                     printf( "Searching for %s(%d) ~~~> %s\n", fullSignature[0],
                             graph->systemCallMap->vector[i]->nodes->vector[k]->id,
                             fullSignature[1]);
-                    /* <-- debug */
+#endif
                     findAndRecordAllPaths( graph->systemCallMap->vector[i]->nodes->vector[k], &fullSignature[1],
                             &fullIntSignature[1], result, visited, myResults, options );
                     Bitfield_delete(visited);
@@ -610,7 +613,7 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
     YAMLWriteInt("Signatures Found", found);
     YAMLWriteString("Search Time", timeStr);
 
-    /* debug --> * /
+#ifdef DEBUG
     printf ("max threads still:%d\n", maxThreads);
     for ( i = 0; i < maxThreads; ++i )
     {
@@ -622,7 +625,7 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
             printf("\n");
         }
     }
-    /* <-- debug */
+#endif
 
     /* At some point, we will want to use the FullPath argument and pass it along to
      * buildGraphFromPaths. Until then, however, we're only going to build the most
