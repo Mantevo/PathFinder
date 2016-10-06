@@ -48,6 +48,7 @@
 #include "vectorUtils.h"
 #include "statistics.h"
 #include "configuration.h"
+#include "yaml.h"
 
 #ifdef QT
    #include "qThreadSearch.h"
