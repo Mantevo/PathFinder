@@ -610,7 +610,7 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
     YAMLWriteInt("Signatures Found", found);
     YAMLWriteString("Search Time", timeStr);
 
-    /* debug --> * /
+#ifdef DEBUG
     printf ("max threads still:%d\n", maxThreads);
     for ( i = 0; i < maxThreads; ++i )
     {
@@ -622,7 +622,7 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
             printf("\n");
         }
     }
-    /* <-- debug */
+#endif
 
     /* At some point, we will want to use the FullPath argument and pass it along to
      * buildGraphFromPaths. Until then, however, we're only going to build the most
