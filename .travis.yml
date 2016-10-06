@@ -1,0 +1,30 @@
+language: c
+sudo: false
+compiler:
+  - gcc
+#env:
+#install:
+#- if [ "$CC" = "gcc" ]; then export CC="gcc-4.9"; fi
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    #packages:
+    #- gcc-4.9
+    #- clang
+script:
+  - make
+  - ./PathFinder.x -x 1kx750.adj_list
+  - ./PathFinder.x -x 2kx750.adj_list
+  - ./PathFinder.x -x 4kx750.adj_list
+  - ./PathFinder.x -x 6kx750.adj_list
+  - ./PathFinder.x -x 8kx750.adj_list
+  - ./PathFinder.x -x 10kx750.adj_list
+#after_failure:
+#  - echo "Sad panda"
+notifications:
+  email:
+    recipients:
+      - jeff.science@gmail.com
+    on_success: [change]
+    on_failure: [always]
