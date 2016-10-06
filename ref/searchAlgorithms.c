@@ -452,8 +452,8 @@ int findAllPossibleLegs( Graph *graph, SearchType searchType )
     //#pragma omp single
     {
         //#pragma omp parallel for private(i,j) default(none)
-        #pragma omp parallel for private(i,j) shared(graph) reduction(+:found) reduction(+:searches) 
-        #pragma omp collapse(2)
+        #pragma omp parallel private(i,j) shared(graph) reduction(+:found) reduction(+:searches)
+        #pragma omp for collapse(2)
         for ( i = 0; i < graph->systemCallMap->contentSize; ++i )
         {
             for ( j = 0; j < graph->systemCallMap->contentSize; ++j )
@@ -564,8 +564,7 @@ int findAndLogAllPossibleLegs(Graph *graph, SearchOptions *options)
             printf ("Immediately before nested for's\n");
         }
 
-        #pragma omp for 
-        #pragma omp collapse(2)
+        #pragma omp for collapse(2)
         for ( i = 0; i < graph->systemCallMap->contentSize; ++i )
         {
             for ( j = 0; j < graph->systemCallMap->contentSize; ++j )
