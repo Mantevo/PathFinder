@@ -2,6 +2,9 @@ language: c
 sudo: false
 compiler:
   - gcc
+os:
+  - linux
+  - osx
 #env:
 #install:
 #- if [ "$CC" = "gcc" ]; then export CC="gcc-4.9"; fi
