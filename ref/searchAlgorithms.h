@@ -101,6 +101,10 @@ int findAndLogAllPossibleLegs( Graph *graph, SearchOptions *options );
  * does multiple signature searches against multiple files 
  */
  
+#ifdef QT
 void doMultiSearchesQT(Configuration *config);
+#else
+void doMultiSearches(Configuration *config);
+#endif
 
 #endif /* SEARCHALGORITHMS_H_ */
