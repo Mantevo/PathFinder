@@ -525,13 +525,13 @@ char **parseSignature( char *data )
         labels[labelCount] = NULL; /* terminate the array */
     }
 
-    /* Debug print out * /
+#ifdef DEBUG
     printf ( "\nSignature: ");
     for ( i = 0; labels[i] != NULL; ++i )
     {
         printf ( "%s ", labels[i] );
     }
-    /* end Debug */
+#endif
 
     return labels;
 }
