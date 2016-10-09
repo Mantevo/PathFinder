@@ -1,0 +1,34 @@
+language: c
+sudo: false
+compiler:
+  - gcc
+os:
+  - linux
+  #- osx
+#env:
+#install:
+#- if [ "$CC" = "gcc" ]; then export CC="gcc-4.9"; fi
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    #packages:
+    #- gcc-4.9
+    #- clang
+script:
+  - cd ref/
+  - make
+  - ./PathFinder.x -x ../data/scaleData/1kx750.adj_list
+  - ./PathFinder.x -x ../data/scaleData/2kx750.adj_list
+  - ./PathFinder.x -x ../data/scaleData/4kx750.adj_list
+  - ./PathFinder.x -x ../data/scaleData/6kx750.adj_list
+  - ./PathFinder.x -x ../data/scaleData/8kx750.adj_list
+  - ./PathFinder.x -x ../data/scaleData/10kx750.adj_list
+#after_failure:
+#  - echo "Sad panda"
+notifications:
+  email:
+    recipients:
+      - jeff.science@gmail.com
+    on_success: [change]
+    on_failure: [always]

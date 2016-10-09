@@ -32,22 +32,14 @@
 
 #-----------------------------------------------------------------------
 
-#CC=cc
-CC=gcc
+CC	:= cc
+CFLAGS	:= -O2 -fopenmp
+LIBS 	:= -lm
 
-CFLAGS = $(OPT)
-#CFLAGS += -openmp
-CFLAGS += -fopenmp
 #CFLAGS += -D_USE_PAT_API
 
 LD      = $(CC)
 LDFLAGS = $(CFLAGS)
-
-# Optimization
-OPT = -O3
-OPT = -g
-
-LIBS = -lgomp -lm
 
 include make_targets
 
